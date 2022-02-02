@@ -48,7 +48,16 @@ app.use(xss());
 
 // Prevent parameter pollution
 app.use(
-  hpp({ whitelist: ["duration", "ratingsQuantity", "ratingsAverage", "maxGroupSize", "difficulty", "price"] })
+  hpp({
+    whitelist: [
+      "duration",
+      "ratingsQuantity",
+      "ratingsAverage",
+      "maxGroupSize",
+      "difficulty",
+      "price",
+    ],
+  })
 );
 
 app.use(compression());
@@ -61,6 +70,7 @@ app.use((req, res, next) => {
 
 // product router
 const uploadsRouter = require("./routes/uploadRoutes");
+const emailRouter = require("./routes/emailRoutes");
 
 const notFound = require("./middleware/not-found");
 const errorHandlerMiddleware = require("./middleware/error-handler");
@@ -73,6 +83,7 @@ app.get("/", (req, res) => {
   res.send("<h1>File Upload Starter</h1>");
 });
 
+app.use("/api/v1/tasks", emailRouter);
 app.use("/api/v1/products", uploadsRouter);
 app.use(notFound);
 app.use(errorHandlerMiddleware);

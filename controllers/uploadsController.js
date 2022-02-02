@@ -6,16 +6,17 @@ const csv = require("csvtojson");
 let csvData = "test";
 const uploadFile = async (req, res) => {
   try {
-    const filePath = req.file.path;
+    // const filePath = req.file.path;
+    const { path } = req.file;
     csv()
-      .fromFile(filePath)
+      .fromFile(path)
       .then((json) => {
         const newJson = [];
         json.map((item) => {
           newJson.push({
             Name: item.Name,
             Email: item.Email,
-            PhoneNumber: item['Phone Number'],
+            PhoneNumber: item["Phone Number"],
           });
         });
         res.status(StatusCodes.OK).json({
