@@ -1,0 +1,1 @@
+web: npm build && node ./dist/app.js
