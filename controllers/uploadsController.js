@@ -7,24 +7,41 @@ let csvData = "test";
 const uploadFile = async (req, res) => {
   try {
     // const filePath = req.file.path;
+    console.log(req.file);
     const { path } = req.file;
-    csv()
-      .fromFile(path)
-      .then((json) => {
-        const newJson = [];
-        json.map((item) => {
-          newJson.push({
-            Name: item.Name,
-            Email: item.Email,
-            PhoneNumber: item["Phone Number"],
-          });
-        });
-        res.status(StatusCodes.OK).json({
-          message: "CSV uploaded  successfully",
-          CSV_Json: newJson,
-        });
-        fs.unlink(filePath);
+    const json = await csv().fromFile(path);
+
+    const newJson = [];
+    json.map((item) => {
+      newJson.push({
+        Name: item.Name,
+        Email: item.Email,
+        PhoneNumber: item["Phone Number"],
       });
+    });
+    res.status(StatusCodes.OK).json({
+      message: "CSV uploaded  successfully",
+      CSV_Json: newJson,
+    });
+    fs.unlink(path, () => {});
+
+    // csv()
+    //   .fromFile(path)
+    //   .then((json) => {
+    //     const newJson = [];
+    //     json.map((item) => {
+    //       newJson.push({
+    //         Name: item.Name,
+    //         Email: item.Email,
+    //         PhoneNumber: item["Phone Number"],
+    //       });
+    //     });
+    //     res.status(StatusCodes.OK).json({
+    //       message: "CSV uploaded  successfully",
+    //       CSV_Json: newJson,
+    //     });
+    //     fs.unlink(path);
+    //   });
   } catch (error) {
     console.log(error);
   }
